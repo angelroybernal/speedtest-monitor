@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Internet Speed Monitor</title>
+</head>
+<body>
+    <h1>Internet Speed</h1>
+    <div>
+        <canvas id="myChart"></canvas>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('myChart');
+      
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: [
+                {% for label in chart_data['labels'] %}
+                    '{{label}}',
+                {% endfor %}
+            ],
+            datasets: [
+            {
+              label: 'Upload',
+              data: [
+                {% for u_value in chart_data['upload'] %}
+                    {{u_value}},
+                {% endfor %}
+              ],
+              borderWidth: 1
+            },
+            {
+              label: 'Download',
+              data: [
+                {% for d_value in chart_data['download'] %}
+                    {{d_value}},
+                {% endfor %}
+              ],
+              borderWidth: 1
+            },
+        ]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      </script>
+</body>
+</html>
