@@ -13,10 +13,10 @@ def start_db():
 def job():
     con = sqlite3.connect("monitor.db")
     cur = con.cursor()
-    print('Probando...')
+    print('Testing...')
     internet_speed_now = internet_speed_test.test_internet_speed()
-    print('Guardando los resultados...')
-    data = (datetime.now() , internet_speed_now['upload'], internet_speed_now['download'])
+    print('Writing results...')
+    data = (datetime.now().strftime("%Y-%m-%d %H:%M") , internet_speed_now['upload'], internet_speed_now['download'])
     cur.execute("INSERT INTO internet_speed VALUES(?, ?, ?)", data)
     con.commit()
 
