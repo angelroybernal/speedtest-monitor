@@ -1,7 +1,7 @@
 import os
 import time
 import sqlite3
-from flask import Flask, jsonify, render_template
+from flask import Flask, render_template
 
 import os
 app = Flask(__name__)
@@ -12,7 +12,7 @@ _port = os.environ.get('PORT', 5000)
 def dashboard():
     con = sqlite3.connect("../monitor.db")
     cur = con.cursor()
-    res = cur.execute("SELECT * FROM internet_speed")
+    res = cur.execute("SELECT * FROM internet_speed ORDER BY time DESC LIMIT 24")
     data = res.fetchall()
     con.close()
 
@@ -23,15 +23,6 @@ def dashboard():
     }
 
     return render_template('index.html', chart_data=chart_data)
-
-@app.route('/api')
-def get_data():
-    con = sqlite3.connect("../monitor.db")
-    cur = con.cursor()
-    res = cur.execute("SELECT * FROM internet_speed")
-    data = jsonify(res.fetchall())
-    con.close()
-    return data
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=_port, debug=True)
